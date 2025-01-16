@@ -1,0 +1,101 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment files
+.env
+.venv/
+env/
+venv/
+ENV/
+*.env
+*.venv
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Log files
+*.log
+
+# Cache files
+*.cache
+*.bak
+*.swp
+*.tmp
+*.temp
+*.old
+*.pid
+*.gz
+
+# Package directories
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+*.cover
+.coverage
+.cache
+.nox/
+*.nosetests.xml
+coverage.xml
+*.coveragerc
+htmlcov/
+
+# Pytest
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# IDE specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Linting
+*.pylint.d
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.orig
+*.DS_Store
+
+# Static analysis tools
+*.pyre/
+
+# Application-specific files
+instance/
+.webassets-cache
+
+# C extensions
+*.so
+
+# Backup files
+*.bak
+
+# Generated docs
+/build/
