@@ -60,14 +60,26 @@ ai_bot = AIbot()
 def index():
     return render_template('index.html')  # Your HTML frontend file
 
+user_input_list = []
+
 @app.route('/get_response', methods=['POST'])
 def get_response():
-    user_input = request.json.get('user_input', '')
+    global user_input_list  # Use the global variable to persist memory
+
+    # Get user input from the request
+    user_input = request.json.get('user_input', '').strip()
     if not user_input:
         return jsonify({"error": "User input is required"}), 400
 
-    # Get GPT completion results
-    result = ai_bot.gptCompletion(user_input)
+    # Append the new input to the user input list
+    user_input_list.append(user_input)
+
+    # Combine all inputs into a conversation string
+    conversation = "\n".join(user_input_list)
+
+    # Pass the conversation to the AI bot
+    result = ai_bot.gptCompletion(conversation)
+
     return jsonify(result)
 
 if __name__ == "__main__":
