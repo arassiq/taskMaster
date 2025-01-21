@@ -13,8 +13,8 @@
         }
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f0f5;
-            color: #333;
+            background-color: #1e1e1e; /* Dark background */
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,19 +25,19 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-            max-width: 1200px;
+            max-width: 900px;
             height: 90%;
-            background-color: #ffffff;
+            background-color: #2e2e2e; /* Slightly lighter background */
             border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
             overflow: hidden;
         }
         #header {
             padding: 20px;
-            background-color: #3c3c3c;
+            background-color: #333333;
             color: white;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
         #main {
             display: flex;
@@ -52,12 +52,12 @@
             overflow-y: auto;
         }
         #tasks {
-            border-right: 1px solid #ddd;
+            border-right: 1px solid #444;
         }
         h2 {
             margin-bottom: 15px;
-            font-size: 1.2rem;
-            color: #3c3c3c;
+            font-size: 1rem;
+            color: #ffffff;
         }
         /* Task Section */
         #task-section {
@@ -65,7 +65,7 @@
             overflow-y: auto;
         }
         .task-item {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .task-item input[type="checkbox"] {
             margin-right: 10px;
@@ -73,75 +73,108 @@
         }
         .main-task {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-bottom: 5px;
         }
         .subtask {
             margin-left: 25px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: normal;
             margin-bottom: 3px;
         }
         /* Chat Section */
-        #notes-section {
+        .chat-message {
+            display: flex; /* Use flexbox for alignment */
+            margin-bottom: 10px;
+            max-width: 70%; /* Limit bubble width */
+            word-wrap: break-word;
+            border-radius: 15px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+
+        .chat-message.user {
+            background-color: #007bff; /* Blue for user messages */
+            color: white;
+            align-self: flex-end; /* Align user messages to the right */
+            text-align: left; /* Keep text inside bubble left-aligned */
+        }
+
+        .chat-message.bot {
+            background-color: #444444; /* Gray for bot messages */
+            color: white;
+            align-self: flex-start; /* Align bot messages to the left */
+            text-align: left; /* Keep text inside bubble left-aligned */
+        }
+
+        #chat-box {
             flex: 1;
             overflow-y: auto;
             margin-bottom: 15px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
+            background-color: #333333;
             border-radius: 8px;
             padding: 15px;
-            color: #555;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column; /* Ensure messages are stacked vertically */
+            gap: 10px; /* Add space between messages */
         }
         textarea {
             width: 100%;
-            height: 80px;
+            height: 60px;
             margin-top: 10px;
             border-radius: 8px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            color: #333;
-            font-size: 1rem;
+            border: 1px solid #666666;
+            background-color: #2e2e2e; /* Textbox background */
+            color: #ffffff;
+            font-size: 0.9rem;
             padding: 10px;
             resize: none;
         }
         button {
             margin-top: 10px;
-            padding: 12px 20px;
-            background-color: #3c3c3c;
+            padding: 10px 15px;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
         button:hover {
-            background-color: #555;
+            background-color: #0056b3;
         }
-        /* Scrollbars */
-        #tasks, #chat {
-            scrollbar-width: thin;
-            scrollbar-color: #ccc #f9f9f9;
+        /* Modal */
+        #name-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
         }
-        #tasks::-webkit-scrollbar, #chat::-webkit-scrollbar {
-            width: 8px;
+        #name-modal-content {
+            background-color: #2e2e2e;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
         }
-        #tasks::-webkit-scrollbar-thumb, #chat::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 4px;
-        }
-        #tasks::-webkit-scrollbar-track, #chat::-webkit-scrollbar-track {
-            background: #f9f9f9;
-        }
-        @media (max-width: 768px) {
-            #main {
-                flex-direction: column;
-            }
-            #tasks {
-                border-right: none;
-                border-bottom: 1px solid #ddd;
-            }
+        #name-modal-content input {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #666666;
+            border-radius: 5px;
+            background-color: #444444;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -154,67 +187,103 @@
                 <div id="task-section"></div>
             </div>
             <div id="chat">
-                <h2>Chat Window</h2>
-                <div id="notes-section"></div>
+                <h2>Chat</h2>
+                <div id="chat-box"></div>
                 <textarea id="user-input" placeholder="Type your input here..."></textarea>
                 <button onclick="sendInput()">Send</button>
             </div>
         </div>
     </div>
-    <script>
-        function sendInput() {
-            const userInput = document.getElementById('user-input').value;
-            fetch('/get_response', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ user_input: userInput }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                renderTasks(data.tasks);
-                document.getElementById('notes-section').innerText = data.notes;
-            })
-            .catch(error => console.error('Error:', error));
-        }
 
+    <!-- Modal for entering name -->
+    <div id="name-modal">
+        <div id="name-modal-content">
+            <h2>Welcome!</h2>
+            <p>Please enter your name to start:</p>
+            <input type="text" id="user-name" placeholder="Your name">
+            <button onclick="submitName()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        let userName = '';
+
+        function submitName() {
+            const nameInput = document.getElementById('user-name').value.trim();
+            if (nameInput) {
+                userName = nameInput;
+                document.getElementById('name-modal').style.display = 'none';
+                // Send the name to the backend
+                fetch('/send_name', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: userName }),
+                }).catch(error => console.error('Error sending name:', error));
+            } else {
+                alert('Please enter a valid name.');
+            }
+        }
         function renderTasks(tasks) {
             const taskSection = document.getElementById('task-section');
             taskSection.innerHTML = ''; // Clear previous tasks
 
-            // Split tasks into lines
-            const lines = tasks.trim().split('\n');
-            let currentTask = null;
+            tasks.forEach(task => {
+                const mainTask = document.createElement('div');
+                mainTask.textContent = task.main_task;
+                mainTask.style.fontWeight = "bold"; // Bold main tasks
+                mainTask.style.marginBottom = "10px";
 
-            lines.forEach(line => {
-                if (line.match(/^\d+\./)) {
-                    // Main Task
-                    const mainTask = document.createElement('div');
-                    mainTask.classList.add('task-item');
-                    mainTask.innerHTML = `
-                        <label>
-                            <input type="checkbox">
-                            <span class="main-task">${line.slice(3)}</span>
-                        </label>
-                    `;
-                    taskSection.appendChild(mainTask);
-                    currentTask = mainTask;
-                } else if (line.match(/^\s+[a-z]\./)) {
-                    // Subtask
-                    if (currentTask) {
-                        const subtask = document.createElement('div');
-                        subtask.classList.add('subtask');
-                        subtask.innerHTML = `
-                            <label>
-                                <input type="checkbox">
-                                <span>${line.trim().slice(2)}</span>
-                            </label>
-                        `;
-                        currentTask.appendChild(subtask);
-                    }
-                }
+                const subtaskList = document.createElement('ul');
+                task.subtasks.forEach(subtask => {
+                    const subtaskItem = document.createElement('li');
+                    subtaskItem.textContent = subtask;
+                    subtaskList.appendChild(subtaskItem);
+                });
+
+                taskSection.appendChild(mainTask);
+                taskSection.appendChild(subtaskList);
             });
+}
+
+        function sendInput() {
+            const userInput = document.getElementById('user-input').value;
+            const chatBox = document.getElementById('chat-box');
+
+            if (userInput) {
+                // Add the user's message to the chat box
+                const userMessage = document.createElement('div');
+                userMessage.classList.add('chat-message', 'user');
+                userMessage.textContent = userInput;
+                chatBox.appendChild(userMessage);
+
+                // Send the input to the backend
+                fetch('/get_response', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_input: userInput }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Add the bot's response to the chat box
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('chat-message', 'bot');
+                    botMessage.textContent = data.notes || "No response provided.";
+                    chatBox.appendChild(botMessage);
+
+                    // Scroll to the bottom of the chat
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                })
+                .catch(error => {
+                    console.error("Fetch error:", error);
+                    const errorMessage = document.createElement('div');
+                    errorMessage.classList.add('chat-message', 'bot');
+                    errorMessage.textContent = "An error occurred. Please try again.";
+                    chatBox.appendChild(errorMessage);
+                });
+
+                // Clear the input box
+                document.getElementById('user-input').value = '';
+            }
         }
     </script>
 </body>
