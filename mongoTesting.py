@@ -29,7 +29,7 @@ def main():
     collection = db["userChatLog"]
 
     data = {"user": "testUser", "chatHistory": "hai"}
-    collection.insert_one(data)
+    #collection.insert_one(data)
 
 # Run this block only if the script is executed directly
 if __name__ == "__main__":
