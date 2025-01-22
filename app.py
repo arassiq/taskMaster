@@ -70,6 +70,19 @@ class AIbot:
 # Initialize the AIbot instance
 ai_bot = AIbot()
 
+jsonFormat= {
+        username: userName,
+
+        
+
+
+
+
+
+
+
+    }
+
 @app.route('/')
 def index():
     return render_template('index.html')  # Your HTML frontend file
@@ -77,9 +90,14 @@ def index():
 user_input_list = []
 
 @app.route('/send_name', methods=['POST'])
+def retrieveUserChats():
+    userName = get_name()
+    print(userName)
+
 def get_name():
-    print(request.json.get('name'))
+    request.json.get('name')
     return Response(status=204)
+
 
 @app.route('/get_response', methods=['POST'])
 def get_response():
