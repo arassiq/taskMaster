@@ -71,17 +71,21 @@ class AIbot:
 ai_bot = AIbot()
 
 jsonFormat= {
-        username: userName,
+        "username" : "test",
+        "chatLog": {
 
-        
+            "1" : "hey",
+            "2" : "hai",
+            "3" : " ",
+            "4" : " ",
+            "5" : " "
 
 
-
-
-
-
+        }
 
     }
+
+
 
 @app.route('/')
 def index():

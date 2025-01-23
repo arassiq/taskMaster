@@ -27,9 +27,39 @@ def main():
 
     db = mongoClient.client["testing"]
     collection = db["userChatLog"]
+    '''jsonFormat= {
+        "username" : "test",
+        "chatLog": {
 
-    data = {"user": "testUser", "chatHistory": "hai"}
-    #collection.insert_one(data)
+            "1" : "hey",
+            "2" : "hai",
+            "3" : " ",
+            "4" : " ",
+            "5" : " "
+
+
+        }
+
+    }
+    data = jsonFormat
+    collection.insert_one(data)'''
+    try:
+        # Query the document with the matching username
+        user_data = collection.find_one({"username": "test"})
+        
+        if user_data and "chatLog" in user_data:
+            print(user_data["chatLog"])
+        else:
+            print(f"No chat log found for username: {"test"}")
+            return None
+    except Exception as e:
+        print(f"Error retrieving chat log: {e}")
+        return None
+
+    #print(jsonFormat["chatLog"]["1"]) #returns hey (1 contents)
+
+
+# Example usage
 
 # Run this block only if the script is executed directly
 if __name__ == "__main__":
