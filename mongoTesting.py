@@ -27,22 +27,23 @@ def main():
 
     db = mongoClient.client["testing"]
     collection = db["userChatLog"]
-    '''jsonFormat= {
+    jsonFormat= {
         "username" : "test",
         "chatLog": {
 
-            "1" : "hey",
-            "2" : "hai",
-            "3" : " ",
-            "4" : " ",
-            "5" : " "
+            "1" : "n/a",
+            "2" : "n/a",
+            "3" : "n/a",
+            "4" : "n/a",
+            "5" : "n/a"
 
 
         }
 
     }
     data = jsonFormat
-    collection.insert_one(data)'''
+    collection.insert_one(data)
+    '''
     try:
         # Query the document with the matching username
         user_data = collection.find_one({"username": "test"})
@@ -57,7 +58,7 @@ def main():
         return None
 
     #print(jsonFormat["chatLog"]["1"]) #returns hey (1 contents)
-
+'''
 
 # Example usage
 

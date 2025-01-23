@@ -3,11 +3,58 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import re
 from flask import Flask, render_template, request, jsonify, Response
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+class MongoConnect:
+
+    def __init__(self):
+        load_dotenv()
+        self.mongoPassword = os.getenv("MONGODBPASSWORD")
+        self.uri = f"mongodb+srv://amrassiq:{self.mongoPassword}@testing.dth0i.mongodb.net/?retryWrites=true&w=majority&appName=Testing"
+
+        # Create a new client and connect to the server
+        self.client = MongoClient(self.uri, server_api=ServerApi('1'), tlsAllowInvalidCertificates=True)
+
+    # Send a ping to confirm a successful connection
+    def connect(self):
+        try:
+            self.client.admin.command('ping')
+            print("Pinged your deployment. You successfully connected to MongoDB!")
+        except Exception as e:
+            print(e)
+
+    def postData(self, username, data):
+        db = self.client["testing"]
+        collection = db["userChatLog"]
+
+        UserChat = collection[username]
+
+        data = jsonFormat
+        UserChat.insert_one(data)
+
+    def requestData(self, username):
+        db = self.client["testing"]
+        collection = db["userChatLog"]
+
+        try:
+            user_data = collection.find_one({"username": username})
+            
+            if user_data and "chatLog" in user_data:
+                print(user_data["chatLog"])
+                return user_data["chatLog"]
+            else:
+                print(f"No chat log found for username: {username}")
+                return None
+            
+        except Exception as e:
+            print(f"Error retrieving chat log: {e}")
+            return None
+
 
 class AIbot:
     def __init__(self):
@@ -74,32 +121,41 @@ jsonFormat= {
         "username" : "test",
         "chatLog": {
 
-            "1" : "hey",
-            "2" : "hai",
-            "3" : " ",
-            "4" : " ",
-            "5" : " "
+            "1" : "",
+            "2" : "",
+            "3" : "",
+            "4" : "",
+            "5" : ""
 
 
         }
 
     }
 
-
-
 @app.route('/')
 def index():
     return render_template('index.html')  # Your HTML frontend file
 
-user_input_list = []
-
-@app.route('/send_name', methods=['POST'])
-def retrieveUserChats():
-    userName = get_name()
+def retrieveUserChats(userName):
+    
     print(userName)
 
+    mongoClient = MongoConnect()
+    mongoClient.connect()
+
+    userData = mongoClient.requestData(userName)
+
+    return userData
+
+
+
+@app.route('/send_name', methods=['POST'])
 def get_name():
-    request.json.get('name')
+    userName = request.json.get('name')
+
+    userData = retrieveUserChats(userName)
+    print(userData)
+
     return Response(status=204)
 
 
@@ -107,21 +163,9 @@ def get_name():
 def get_response():
     global user_input_list  # Use the global variable to persist memory
 
+    requestData(self, username)
     # Get user input from the request
-    user_input = request.json.get('user_input', '').strip()
-    if not user_input:
-        return jsonify({"error": "User input is required"}), 400
-
-    # Append the new input to the user input list
-    user_input_list.append(user_input)
-
-    # Combine all inputs into a conversation string
-    conversation = "\n".join(user_input_list)
-
-    # Pass the conversation to the AI bot
-    result = ai_bot.gptCompletion(conversation)
-
-    return jsonify(result)
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
