@@ -28,14 +28,15 @@ class MongoConnect:
         except Exception as e:
             print(e)
 
-    def postData(self, username, data):
+    def postData(self, username, userChatLog):
         db = self.client["testing"]
         collection = db["userChatLog"]
 
-        UserChat = collection[username]
-
-        data = jsonFormat
-        UserChat.insert_one(data)
+        collection.update_one(
+            {"username": username},  # Filter by username
+            {"$set": userChatLog},   # Set the new chat log
+            upsert=True              # Create the document if it doesn't exist
+        )
 
     def requestData(self, username):
         db = self.client["testing"]
@@ -71,7 +72,7 @@ class AIbot:
 
                         Provide the output with a strict separation between 'Tasks:' and 'Notes:'. Ensure all Output tasks in a structured format, like a JSON object., and any unrelated text is only added to the 'Notes:' section prefixed by 'Notes:'.
 
-                        Output tasks in the following format:
+                        Output Tasks in the following format:
                         1. [Main Task 1]
                         a. [Subtask 1 for Main Task 1]
                         b. [Subtask 2 for Main Task 1]
@@ -84,6 +85,8 @@ class AIbot:
                         Anything that is not apart of the task list, add in the notes section, such as greetings, plaintext. If it is not in task format, do not add it to tasks.
 
                         Make sure that you keep it concise in the notes section, and ask a good amount of questions
+
+                        Make sure the tasks section is denoted by "Tasks:"
                         """
                 },
                 { 
@@ -117,40 +120,25 @@ class AIbot:
 # Initialize the AIbot instance
 ai_bot = AIbot()
 
-jsonFormat= {
-        "username" : "test",
-        "chatLog": {
-
-            "1" : "",
-            "2" : "",
-            "3" : "",
-            "4" : "",
-            "5" : ""
-
-
-        }
-
-    }
-
 @app.route('/')
 def index():
     return render_template('index.html')  # Your HTML frontend file
 
 def retrieveUserChats(userName):
-    
+    global user_input_list
     print(userName)
 
     mongoClient = MongoConnect()
     mongoClient.connect()
 
-    userData = mongoClient.requestData(userName)
+    user_input_list = mongoClient.requestData(userName)
 
-    return userData
-
-
+    return user_input_list
 
 @app.route('/send_name', methods=['POST'])
 def get_name():
+    global userName
+
     userName = request.json.get('name')
 
     userData = retrieveUserChats(userName)
@@ -161,10 +149,38 @@ def get_name():
 
 @app.route('/get_response', methods=['POST'])
 def get_response():
-    global user_input_list  # Use the global variable to persist memory
+      # Use the global variable to persist memory
 
-    requestData(self, username)
-    # Get user input from the request
+    user_input = request.json.get('user_input', '').strip()
+    if not user_input:
+        return jsonify({"error": "User input is required"}), 400
+    
+    print(f"user input list:\n {user_input_list}")
+
+    print(f"\n\n user input:\n {user_input}")
+    
+    reformatted_user_input_list= {
+        "username" : userName,
+        "chatLog": {
+
+            "1" : user_input,
+            "2" : user_input_list["1"],
+            "3" : user_input_list["2"],
+            "4" : user_input_list["3"],
+            "5" : user_input_list["4"]
+
+
+        }
+    }
+    mongoClient = MongoConnect()
+    mongoClient.connect()
+
+    mongoClient.postData(userName, reformatted_user_input_list)
+
+    conversation = reformatted_user_input_list["chatLog"]
+    result = ai_bot.gptCompletion(str(conversation))
+
+    return jsonify(result)
     
 
 if __name__ == "__main__":

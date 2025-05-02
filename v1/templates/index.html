@@ -270,6 +270,11 @@
                     botMessage.textContent = data.notes || "No response provided.";
                     chatBox.appendChild(botMessage);
 
+                    // Update the tasks section with the bot's tasks
+                    if (data.tasks) {
+                        renderTasks(data.tasks);
+                    }
+
                     // Scroll to the bottom of the chat
                     chatBox.scrollTop = chatBox.scrollHeight;
                 })
